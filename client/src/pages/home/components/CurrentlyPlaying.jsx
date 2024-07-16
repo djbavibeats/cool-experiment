@@ -16,28 +16,6 @@ const CurrentlyPlaying = ({ user }) => {
     })
 
     const targetAlbumId = "47k5dQRj8tZJwZjLUt85fi"
-    
-    useEffect(() => {
-        // const script = document.createElement('script')
-        // script.src = 'https://sdk.scdn.co/spotify-player.js'
-        // script.async = true
-        // document.body.appendChild(script)
-
-        // window.onSpotifyWebPlaybackSDKReady = () => {
-        //     console.log('is it ready?')
-        //     const token = localStorage.getItem('exp_access_token')
-        //     const player = new Spotify.Player({
-        //         name: 'Web Playback SDK Quick Start Player',
-        //         getOAuthToken: cb => { cb(token) }
-        //     })
-
-        //     player.connect().then(success => {
-        //         if (success) {
-        //             console.log('The Web Playback SDK successfully connected to Spotify!');
-        //         }
-        //     })
-        // }
-    }, [])
 
     useEffect(() => {
         let accessToken = localStorage.getItem('exp_access_token')

@@ -18,7 +18,7 @@ const Loading = () => {
     </>)
 }
 
-const Introduction = ({ user, setUser, setScreen }) => {
+const Introduction = ({ user, setUser, setScreen, lit, setLit }) => {
   return (<div className="flex flex-col gap-y-4 items-center justify-center max-w-[375px] mt-8 h-full">
     
     <div className="flex flex-col items-center justify-center">
@@ -29,7 +29,9 @@ const Introduction = ({ user, setUser, setScreen }) => {
         </p>
     </div>
 
-    <Spotify user={ user } setUser={ setUser } />
+    {/* <Spotify user={ user } setUser={ setUser } /> */}
+    
+    <WebsocketMap lit={ lit } setLit={ setLit } />
 
   </div>)
 }
@@ -70,9 +72,9 @@ function Home () {
 
     return (<div className="w-full min-h-[100vh] flex items-center justify-center content-body">
         { screen === 'loading' && <Loading /> }
-        { screen === 'introduction' && <Introduction user={ user } setUser={ setUser } setScreen={ setScreen } /> }
+        { screen === 'introduction' && <Introduction user={ user } setUser={ setUser } setScreen={ setScreen } lit={ lit } setLit={ setLit } /> }
         { screen === 'content' && <Content user={ user } setScreen={ setScreen } lit={ lit } setLit={ setLit } /> }
-        <WebsocketMap lit={ lit } setLit={ setLit } />
+        
     </div>)
 }
 
