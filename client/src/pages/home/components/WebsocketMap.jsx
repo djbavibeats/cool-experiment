@@ -12,7 +12,7 @@ const WS_URL = import.meta.env.VITE_WS_URL
 const Map = ({ latitude, longitude, posInitialized, visitors }) => {
     const mapContainer = useRef(null)
     const map = useRef(null)
-    const [ zoom, setZoom ] = useState(1)
+    const [ zoom, setZoom ] = useState(9)
 
     const [ visitorsCopy, setVisitorsCopy ] = useState([])
 
