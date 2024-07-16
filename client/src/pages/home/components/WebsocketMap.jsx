@@ -12,12 +12,13 @@ const WS_URL = import.meta.env.VITE_WS_URL
 const Map = ({ latitude, longitude, posInitialized, visitors }) => {
     const mapContainer = useRef(null)
     const map = useRef(null)
-    const [ zoom, setZoom ] = useState(9)
+    const [ zoom, setZoom ] = useState(1)
 
     const [ visitorsCopy, setVisitorsCopy ] = useState([])
 
     useEffect(() => {
         if (map.current) return // initialize map only once
+        console.log(visitors)
     })
 
     useEffect(() => {
@@ -37,16 +38,18 @@ const Map = ({ latitude, longitude, posInitialized, visitors }) => {
                     return visitor1.sessionId === visitor2.sessionId
                 })
             })
-            console.log("This person joined: ", joined)
-            const el = document.createElement('div')
-            el.classList.add('marker')
-            el.id = joined[0].sessionId
-            const marker = new mapboxgl.Marker({ 
-                className: 'marker', 
-                element: el
-            })
-                                        .setLngLat([ joined[0].longitude, joined[0].latitude ])
-                                        .addTo(map.current)
+            console.log("These people joined: ", joined)
+            for (let i = 0; i < joined.length; i++) {
+                const el = document.createElement('div')
+                el.classList.add('marker')
+                el.id = joined[i].sessionId
+                const marker = new mapboxgl.Marker({ 
+                    className: 'marker', 
+                    element: el
+                })
+                    .setLngLat([ joined[i].longitude, joined[i].latitude ])
+                    .addTo(map.current)
+            }
         // Someone left
         } else if (visitors.length < visitorsCopy.length) {
             var left = visitorsCopy.filter((visitor1) => {
@@ -62,10 +65,7 @@ const Map = ({ latitude, longitude, posInitialized, visitors }) => {
     }, [ visitors ])
 
     useEffect(() => {
-        const marker = new mapboxgl.Marker()
-            .setLngLat([12.554729, 55.70651])
-            .addTo(map.current)
-    }, [ visitorsCopy ])
+    }, [])
 
     return (<div className="w-[350px] h-[350px] max-w-[100%] relative">
         <div ref={mapContainer} className="map-container h-[100%]" />
