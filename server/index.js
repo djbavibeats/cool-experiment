@@ -14,19 +14,19 @@ server.listen(port, () => {
 
 // Maintain active connections here
 const clients = {}
-const users = {}
+const users = []
 
 function broadcastMessage(json) {
     const data = JSON.stringify(json)
-    for (let userId in clients) {
-        let client = clients[userId].connection
+    for (let sessionId in clients) {
+        let client = clients[sessionId].connection
         if (client.readyState === WebSocket.OPEN) {
             client.send(data)
         }
     }
 }
 
-function handleMessage(message, userId) {
+function handleMessage(message, sessionId) {
     const dataFromClient = JSON.parse(message.toString())
     const json = { type: dataFromClient.type }
     json.data = {
@@ -37,9 +37,10 @@ function handleMessage(message, userId) {
     broadcastMessage(json)
 }
 
-function handleDisconnect(userId) {
-    delete clients[userId]
-    delete users[userId]
+function handleDisconnect(sessionId) {
+    delete clients[sessionId]
+    // delete users[sessionId]
+    users.splice(users.findIndex(user => user.sessionId === sessionId), 1)
     broadcastMessage({
         message: 'user disconnected',
         users: users
@@ -47,34 +48,37 @@ function handleDisconnect(userId) {
 }
 
 wsServer.on('connection', function(connection, request) {
-    const userId = uuidv4()
-
+    // const userId = uuidv4()
     // Get the latitude and longitude from the request
-    const { latitude, longitude } = url.parse(request.url, true).query
+    const { sessionId, latitude, longitude } = url.parse(request.url, true).query
 
+    console.log(`New Session: ${sessionId}`)
+    
     // Store the new connection
-    clients[userId] = {
+    clients[sessionId] = {
         connection
     }
-    users[userId] = {
+    users.push({
+        sessionId: sessionId,
         latitude: latitude,
         longitude: longitude
-    }
-    console.log(`User ${userId} connected at:`)
-    console.log(`   Latitude:  ${latitude}`)
-    console.log(`   Longitude: ${longitude}`)
+    })
 
+    // Broadcast a message to all users saying that a new user has connected
     broadcastMessage({ 
         message: 'user connected',
+        new_session_id: sessionId,
+        new_user_latitude: latitude,
+        new_user_longitude: longitude,
         users: users 
     })
 
-    connection.on('message', (message) => handleMessage(message, userId))
+    connection.on('message', (message) => handleMessage(message, sessionId))
 
     // User disconnected
     connection.on('close', () => {
-        console.log(`goodbye ${userId}`)
-        handleDisconnect(userId)
+        console.log(`goodbye ${sessionId}`)
+        handleDisconnect(sessionId)
     })
 
 })
