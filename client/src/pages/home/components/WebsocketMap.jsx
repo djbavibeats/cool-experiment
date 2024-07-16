@@ -57,9 +57,11 @@ const Map = ({ latitude, longitude, posInitialized, visitors }) => {
                     return visitor1.sessionId === visitor2.sessionId
                 })
             })
-            console.log("This person left: ", left)
+            console.log("These people left: ", left)
+            for (let i = 0; i < left.length; i++) {
+                document.getElementById(`${left[i].sessionId}`).remove()
+            }
             // console.log("Here is there marker", document.getElementById(`${left[0].sessionId}`))
-            document.getElementById(`${left[0].sessionId}`).remove()
         }
         setVisitorsCopy(visitors)
     }, [ visitors ])
