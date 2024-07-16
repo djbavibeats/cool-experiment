@@ -6,7 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGludm9sdGNyZWF0aXZlIiwiYSI6ImNrczY2eDFpYTBieXEzMGxoaDF1Nmd2aXgifQ.0HoSQyn8pH5coK4IxPRhrQ';
 
-const WS_URL = 'ws://127.0.0.1:8000'
+const WS_URL = import.meta.env.VITE_WS_URL
 
 const Map = ({ latitude, longitude, posInitialized }) => {
     const mapContainer = useRef(null)
