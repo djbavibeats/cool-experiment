@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.content-body {
+    position: relative;
+    min-height: calc(100vh - 45px);
+}
+  
+  /* Mapbox Marker Styles */
+  .marker {
+    /* background: black; */
+    /* box-shadow: 5px -5px 15px black; */
+    background-size: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .animated {
+    /* background-image: url('../public/images/smiley-face.webp'); */
+    background-image: url('../public/images/smiley-face.webp');
+  
+  }
